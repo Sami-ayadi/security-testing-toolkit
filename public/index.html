@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security Testing Toolkit</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand-mark">ST</div>
+    <div>
+      <p class="eyebrow">Tests autorisés uniquement</p>
+      <h1>Security Testing Toolkit</h1>
+    </div>
+  </header>
+
+  <main>
+    <nav class="tabs" aria-label="Modules">
+      <button class="tab active" data-panel="csrf">CSRF PoC</button>
+      <button class="tab" data-panel="oast">OAST Monitor</button>
+    </nav>
+
+    <section id="csrf" class="panel active">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Générateur local</p>
+          <h2>Créer une preuve de concept CSRF</h2>
+        </div>
+        <div class="csrf-options">
+          <label>Fichiers multipart
+            <select id="file-mode">
+              <option value="blob" selected>Intégrer avec Blob</option>
+              <option value="manual">Sélection manuelle</option>
+            </select>
+          </label>
+          <label class="switch"><input id="auto-submit" type="checkbox" checked> Soumission automatique</label>
+        </div>
+      </div>
+
+      <div class="grid two-columns">
+        <div>
+          <label for="raw-request">Requête HTTP brute</label>
+          <textarea id="raw-request" spellcheck="false">POST /account/email HTTP/1.1
+Host: example.test
+Content-Type: application/x-www-form-urlencoded
+
+email=test%40example.test&confirm=yes</textarea>
+          <div class="actions">
+            <button id="generate" class="primary">Générer la PoC</button>
+            <button id="clear-request" class="secondary">Effacer</button>
+          </div>
+        </div>
+        <div>
+          <label for="poc-output">Document HTML généré</label>
+          <textarea id="poc-output" spellcheck="false" readonly placeholder="La PoC apparaîtra ici…"></textarea>
+          <p id="csrf-message" class="message" role="status"></p>
+          <div class="actions">
+            <button id="copy-poc" class="secondary" disabled>Copier</button>
+            <button id="download-poc" class="secondary" disabled>Télécharger csrf-poc.html</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="oast" class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Webhook.site</p>
+          <h2>Surveiller les interactions externes</h2>
+        </div>
+        <span id="oast-status" class="status idle">Non connecté</span>
+      </div>
+
+      <div class="config-grid">
+        <div>
+          <label for="token">Token Webhook.site</label>
+          <input id="token" placeholder="00000000-0000-0000-0000-000000000000" autocomplete="off">
+        </div>
+        <div>
+          <label for="api-key">Clé API facultative</label>
+          <input id="api-key" type="password" placeholder="Conservée uniquement dans cet onglet" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="new-correlation" class="primary">Nouvel identifiant</button>
+        <button id="refresh-events" class="secondary">Actualiser les événements</button>
+      </div>
+
+      <div class="endpoint-card">
+        <div><span>HTTP</span><code id="http-endpoint">Configurez un token</code><button class="copy-small" data-copy="http-endpoint">Copier</button></div>
+        <div><span>DNS</span><code id="dns-endpoint">Configurez un token</code><button class="copy-small" data-copy="dns-endpoint">Copier</button></div>
+        <div><span>Email</span><code id="email-endpoint">Configurez un token</code><button class="copy-small" data-copy="email-endpoint">Copier</button></div>
+      </div>
+
+      <div class="event-heading">
+        <h3>Interactions reçues</h3>
+        <span id="event-count">0 événement</span>
+      </div>
+      <div id="events" class="events empty">Aucune interaction chargée.</div>
+      <p class="privacy-note">La version gratuite de Webhook.site conserve les données temporairement. Toute personne connaissant le token peut potentiellement consulter les interactions.</p>
+    </section>
+  </main>
+
+  <footer>Outil local destiné exclusivement aux environnements que vous possédez ou êtes autorisé à tester.</footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

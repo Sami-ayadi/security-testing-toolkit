@@ -1,0 +1,17 @@
+# Compiled binaries
+*.exe
+*.out
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and platform files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local deployment metadata
+.vercel/
